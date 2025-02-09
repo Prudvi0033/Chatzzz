@@ -7,11 +7,11 @@ const Navbar = () => {
 
   return (
     <header
-      className="fixed w-full top-0 z-40 backdrop-blur-lg bg-base-100/80"
+      className=" fixed w-full top-0 z-40 bg-transparent mt-3"
     >
       <div className="container mx-auto px-4 h-16">
         <div className="flex items-center justify-between h-full">
-          <div className="flex items-center gap-10">
+          <div className="flex items-center gap-10 mx-20">
             <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all cursor-pointer">
               <div className="size-9 rounded-lg bg-blue-400 flex items-center justify-center">
                 <MessageSquare className="w-5 h-5 text-white size-10" />
@@ -20,7 +20,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mx-20">
             <Link
               to={"/settings"}
               className='btn btn-sm gap-2'

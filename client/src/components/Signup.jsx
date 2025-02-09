@@ -35,7 +35,7 @@ const Signup = () => {
     <div className='grid grid-cols-1 md:grid-cols-2 raleway'>
       {/* Left Side - Form */}
       <div className="flex items-center justify-center min-h-screen p-4">
-        <form onSubmit={handleSignup} className="w-full sm:w-[350px] p-6 rounded-lg shadow-lg">
+        <form onSubmit={handleSignup} className="w-full sm:w-[350px] p-6 rounded-lg">
           <div className='flex flex-col gap-2 items-center justify-center'>
             <MessageSquare size={60} className='text-white bg-blue-400 p-3 rounded-lg'/>
             <h1 className='  text-2xl font-semibold'>Create Account</h1>
@@ -111,10 +111,12 @@ const Signup = () => {
       </div>
 
       {/* Right Side - Image */}
+      <div className='mt-10'>
       <AuthImagePattern 
         title="Join Our Community" 
         subtitle="Connect with friends, share moments, and stay in touch with your friends" 
       />
+      </div>
     </div>
   )
 }

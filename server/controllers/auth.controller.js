@@ -1,6 +1,5 @@
 import User from "../models/user.model.js"
 import cloudinary from "../lib/cloudinary.js"
-
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
@@ -36,7 +35,7 @@ export const signup = async (req, res) => {
             maxAge: 3 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             sameSite: "strict",
-            secure: process.env.NODE_ENV !== "development", 
+            secure: process.env.NODE_ENV !== "development",
         });
 
         return res.status(201).json({
@@ -74,10 +73,10 @@ export const login = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
 
         res.cookie("chatzzz-jwt", token, {
-            maxAge: 3 * 24 * 60 * 60 * 1000, 
+            maxAge: 3 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             sameSite: "strict",
-            secure: process.env.NODE_ENV !== "development", 
+            secure: process.env.NODE_ENV !== "development",
         });
 
         return res.status(200).json({
@@ -106,23 +105,29 @@ export const logout = async (req, res) => {
     }
 };
 
-export const editProfile = async(req, res) => {
-    const {profilePicture} = req.body
-    const userId = req.userId
 
+export const editProfile = async (req, res) => {
     try {
-        if(!profilePicture){
-            res.json({msg : "profile picture is required"})
-        }
-    
-        const img = await cloudinary.uploader.upload(profilePicture)
-        const updatedUser = await User.findByIdAndUpdate({userId : userId},{profilePicture : img.secure_url},{new : true})
-
-        res.status(200).json({updatedUser})
+      const { profilePicture } = req.body;
+      const userId = req.userId;
+  
+      if (!profilePicture) {
+        return res.status(400).json({ message: "Profile pic is required" });
+      }
+  
+      const uploadResponse = await cloudinary.uploader.upload(profilePicture);
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { profilePicture: uploadResponse.secure_url },
+        { new: true }
+      );
+  
+      res.status(200).json(updatedUser);
     } catch (error) {
-        console.log("Error in updating profile");
+      console.log("error in update profile:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
-}
+};
 
 export const checkAuth = async (req, res) => {
     try {

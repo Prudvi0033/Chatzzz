@@ -10,11 +10,11 @@ import Profile from './components/Profile';
 import { useAuthStore } from './store/useAuthStore';
 
 import { Toaster } from 'react-hot-toast';
+import { useThemeStore } from './store/useThemeStore';
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-
-  // ✅ Memoize checkAuth to prevent infinite re-renders
+  const {theme} = useThemeStore()
   const checkAuthMemoized = useCallback(checkAuth, []);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div data-theme={theme}>
       <Navbar />
       <Routes>
         <Route path='/' element={authUser ? <Home /> : <Navigate to="/login" />} />

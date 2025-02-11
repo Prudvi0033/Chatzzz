@@ -1,6 +1,8 @@
 import Msg from "../models/msg.model.js"
 import User from "../models/user.model.js"
 import cloudinary from "../lib/cloudinary.js"
+import { getReceiverSocketId } from "../lib/socket.js"
+import { io } from "../lib/socket.js"
 
 export const getUsers = async (req, res) => {
     const filter = req.query.filter || ""
@@ -68,6 +70,10 @@ export const sendMessage = async (req, res) => {
         })
 
         //add realtime msgs using socket.io
+        const recieverSocketId = getReceiverSocketId(recieverId)
+        if(recieverId){
+            io.to(recieverSocketId).emit("newMessage",newMessage)
+        }
 
         res.json({ newMessage })
     } catch (error) {

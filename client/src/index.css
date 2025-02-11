@@ -5,3 +5,23 @@
 .raleway {
     font-family: "Raleway", serif;
   }
+
+  /* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111; /* Dark background */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444; /* Default thumb color */
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666; /* Lighter thumb on hover */
+}

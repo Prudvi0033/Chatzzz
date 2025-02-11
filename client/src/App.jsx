@@ -13,9 +13,12 @@ import { Toaster } from 'react-hot-toast';
 import { useThemeStore } from './store/useThemeStore';
 
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth,onlineUsers  } = useAuthStore();
   const {theme} = useThemeStore()
   const checkAuthMemoized = useCallback(checkAuth, []);
+
+  console.log(onlineUsers);
+  
 
   useEffect(() => {
     checkAuthMemoized(); // Runs only once

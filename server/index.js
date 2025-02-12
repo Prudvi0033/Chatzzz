@@ -22,7 +22,7 @@ app.use("/api/v1/msg",messageRoutes)
 
 
 server.listen(process.env.PORT,()=>{
-    console.log("Server is running");
+    console.log("Server is running"); 
     connectDB()
 })
 

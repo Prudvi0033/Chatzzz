@@ -39,6 +39,26 @@ export const useChatStore = create((set, get) => ({
         }
     },
 
+    sendMessage: async (messageData) => {
+        const { selectedUser, messages } = get();
+        const messagesArray = Array.isArray(messages) ? messages : []; // Ensure messages is an array
+
+        try {
+            const res = await axiosInstance.post(`/msg/send/${selectedUser._id}`, messageData);
+            const newMessage = res.data.newMessage || res.data; // Extract newMessage if wrapped
+
+            if (newMessage && newMessage._id) {
+                set({ messages: [...messagesArray, newMessage] });
+            } else {
+                console.error("Invalid message data:", res.data);
+                toast.error("Failed to send message. Invalid response from server.");
+            }
+        } catch (error) {
+            console.error("Error sending message:", error);
+            toast.error(error.response?.data?.message || "Error sending message");
+        }
+    },
+
     subscribeToMessages: () => {
         const { selectedUser } = get()
         if (!selectedUser) return;
@@ -47,7 +67,7 @@ export const useChatStore = create((set, get) => ({
 
         socket.on("newMessage", (newMessage) => {
             const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id
-            if(isMessageSentFromSelectedUser) return;
+            if (isMessageSentFromSelectedUser) return;
             set({
                 messages: [...get().messages, newMessage]
             })
@@ -60,25 +80,5 @@ export const useChatStore = create((set, get) => ({
         socket.off("newMessage")
     },
 
-    sendMessage: async (messageData) => {
-        const { selectedUser, messages } = get();
-        const messagesArray = Array.isArray(messages) ? messages : []; // Ensure messages is an array
-    
-        try {
-            const res = await axiosInstance.post(`/msg/send/${selectedUser._id}`, messageData);
-            const newMessage = res.data.newMessage || res.data; // Extract newMessage if wrapped
-    
-            if (newMessage && newMessage._id) {
-                set({ messages: [...messagesArray, newMessage] });
-            } else {
-                console.error("Invalid message data:", res.data);
-                toast.error("Failed to send message. Invalid response from server.");
-            }
-        } catch (error) {
-            console.error("Error sending message:", error);
-            toast.error(error.response?.data?.message || "Error sending message");
-        }
-    },
- 
     setSelectedUser: (selectedUser) => set({ selectedUser }),
 }))

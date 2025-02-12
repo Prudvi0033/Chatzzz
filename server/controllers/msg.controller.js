@@ -38,7 +38,7 @@ export const getMessages = async (req, res) => {
                 { senderId: myId, recieverId: userToChatId },
                 { senderId: userToChatId, recieverId: myId }
             ]
-        }).sort({createdAt : 1})
+        }).sort({ createdAt: 1 })
 
         return res.status(200).json({
             messages
@@ -70,9 +70,9 @@ export const sendMessage = async (req, res) => {
         })
 
         //add realtime msgs using socket.io
-        const recieverSocketId = getReceiverSocketId(recieverId)
-        if(recieverId){
-            io.to(recieverSocketId).emit("newMessage",newMessage)
+        const receiverSocketId = getReceiverSocketId(recieverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMessage);
         }
 
         res.json({ newMessage })
